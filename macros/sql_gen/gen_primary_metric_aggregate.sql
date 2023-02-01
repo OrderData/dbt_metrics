@@ -73,12 +73,13 @@
             {% set second_part = aggregate[13:].split("<<dimensions>>")[1] %}
             {{first_part}} {% for dimension in dimensions %} {{dimension}} {% if not loop.last %} , {% endif %} {% endfor %} {{second_part}}
         {% elif '<<partition_by_dimensions>>' in aggregate[13:] %}
-            {% set first_part = aggregate[13:].split("<<partition_by_dimensions>>")[0] %}
-            {% set second_part = aggregate[13:].split("<<partition_by_dimensions>>")[1] %}
-            {% if dimensions != [] %}
-                {{first_part}} {{second_part}}
-            {% elif dimensions == [] %}
-                {{first_part}} partition by {% for dimension in dimensions %} {{dimension}} {% if not loop.last %} , {% endif %} {% endfor %} {{second_part}}
+            {% set split_parts = aggregate[13:].split("<<partition_by_dimensions>>") %}
+            {% if dimensions == [] %}
+                {% for part in split_parts %} {{part}} {% endfor %}
+            {% elif dimensions != [] %}
+                {% for part in split_parts %} 
+                {{part}} {% if not loop.last %} partition by {% for dimension in dimensions %} {{dimension}} {% if not loop.last %} , {% endif %} {% endfor %} {% endif %} 
+                {% endfor %}
             {% endif %}
         {% else %}
             {{aggregate[13:]}}
