@@ -102,6 +102,23 @@
             {%- endif -%}
             {%- set sql_expression = partition_by_time_expression -%}
         {% endif %}
+        {% if '<<partition_by_dimensions_and_date>>' in sql_expression %}
+            {% set split_parts = sql_expression.split("<<partition_by_dimensions_and_date>>") %}
+            {% if dimensions == [] and grain is none %}
+                {%- set dim_expression = split_parts | join(" partition by true ") -%}
+            {% elif dimensions == [] and grain is not none %}
+                {%- set partition_by_expression = " date_" + grain + " " -%}
+                {%- set dim_expression = split_parts | join(" partition by " ~ partition_by_expression) -%}
+            {% elif dimensions != [] and grain is none %}
+                {%- set partition_by_expression = dimensions | join(', ') -%}
+                {%- set dim_expression = split_parts | join(" partition by " ~ partition_by_expression) -%}
+            {% elif dimensions != [] and grain is not none %}
+                {%- set partition_by_expression = dimensions | join(', ') -%}
+                {%- set partition_by_expression = partition_by_expression + ", date_" + grain + " " -%}
+                {%- set dim_expression = split_parts | join(" partition by " ~ partition_by_expression) -%}
+            {% endif %}
+            {%- set sql_expression = dim_expression -%}
+        {% endif %}
         {%- if ('<<order_by_date_asc>>' in sql_expression or '<<order_by_date_desc>>' in sql_expression) %}
             {% set order  = " asc " %}
             {% set split_string = "<<order_by_date_asc>>" %}
