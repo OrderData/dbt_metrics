@@ -88,7 +88,7 @@
                 {%- set dim_expression = split_parts | join(" partition by true ") -%}
             {% elif grain is not none %}
                 {%- set partition_by_expression = dimensions | join(', ') -%}
-                {%- set dim_expression = split_parts | join(” partition by ” + “date_“+ grain) -%}
+                {%- set dim_expression = split_parts | join(" partition by " + "date_"+ grain) -%}
             {% endif %}
             {% set expression = dim_expression %}
         {% endif %}
