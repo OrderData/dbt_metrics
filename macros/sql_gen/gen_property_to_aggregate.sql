@@ -82,5 +82,15 @@
             {% endif %}
             {% set expression = dim_expression %}
         {% endif %}
+        {% if '<<partition_by_date>>' in expression %}
+            {% set split_parts = expression.split("<<partition_by_date>>") %}
+            {% if grain is none %}
+                {%- set dim_expression = split_parts | join(" partition by true ") -%}
+            {% elif grain is not none %}
+                {%- set partition_by_expression = dimensions | join(', ') -%}
+                {%- set dim_expression = split_parts | join(” partition by ” + “date_“+ grain) -%}
+            {% endif %}
+            {% set expression = dim_expression %}
+        {% endif %}
         ({{expression}}) as property_to_aggregate__{{metric_dictionary.name}}
 {%- endmacro -%}
