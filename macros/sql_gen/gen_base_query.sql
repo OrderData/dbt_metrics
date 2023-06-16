@@ -12,7 +12,7 @@
                 the same windows & filters, we can base the conditional off of the first 
                 value in the list because the order doesn't matter. 
             -#}
-            cast(base_model.{{group_values.timestamp | replace( '<<time_grain>>' , grain ) }} as date) as metric_date_day,
+            cast(base_model.{{group_values.timestamp | replace( '<<date_grain>>' , grain ) }} as date) as metric_date_day,
             calendar.date_{{ grain }} as date_{{grain}},
             calendar.date_day as window_filter_date,
                 {%- if secondary_calculations | length > 0 %}
