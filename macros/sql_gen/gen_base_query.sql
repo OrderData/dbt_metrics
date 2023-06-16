@@ -40,7 +40,7 @@
         {# #}
         where 1=1
         {#- -#}
-        {{ metrics.gen_filters(group_values, start_date, end_date, where) }}
+        {{ metrics.gen_filters(group_values, start_date, end_date, where, grain) }}
         {# #}
 
 {%- endmacro -%}
