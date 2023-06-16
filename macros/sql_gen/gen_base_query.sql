@@ -35,7 +35,7 @@
         from {{ group_values.metric_model }} base_model 
         {# -#}
         {%- if grain or calendar_dimensions|length > 0 -%}
-        {{ metrics.gen_calendar_join(group_values) }} 
+        {{ metrics.gen_calendar_join(group_values, grain) }} 
         {%- endif -%}
         {# #}
         where 1=1

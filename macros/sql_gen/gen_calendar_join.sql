@@ -1,8 +1,8 @@
 {% macro gen_calendar_join(group_values) %}
-    {{ return(adapter.dispatch('gen_calendar_join', 'metrics')(group_values)) }}
+    {{ return(adapter.dispatch('gen_calendar_join', 'metrics')(group_values, grain)) }}
 {%- endmacro -%}
 
-{% macro default__gen_calendar_join(group_values) %}
+{% macro default__gen_calendar_join(group_values, grain) %}
         left join calendar
         {%- if group_values.window is not none %}
             on cast(base_model.{{group_values.timestamp | replace( '<<date_grain>>' , grain ) }} as date) > dateadd({{group_values.window.period}}, -{{group_values.window.count}}, calendar.date_day)
