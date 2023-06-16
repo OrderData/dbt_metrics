@@ -1,4 +1,4 @@
-{%- macro gen_filters(model_values, start_date, end_date, where) -%}
+{%- macro gen_filters(model_values, start_date, end_date, where, grain) -%}
     {{ return(adapter.dispatch('gen_filters', 'metrics')(model_values, start_date, end_date, where)) }}
 {%- endmacro -%}
 
