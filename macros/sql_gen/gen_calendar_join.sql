@@ -1,4 +1,4 @@
-{% macro gen_calendar_join(group_values) %}
+{% macro gen_calendar_join(group_values, grain) %}
     {{ return(adapter.dispatch('gen_calendar_join', 'metrics')(group_values, grain)) }}
 {%- endmacro -%}
 
