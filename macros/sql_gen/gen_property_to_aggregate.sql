@@ -92,5 +92,12 @@
             {% endif %}
             {% set expression = dim_expression %}
         {% endif %}
+        {% if '<<date_grain>>' in expression %}
+            {% set split_parts = expression.split("<<date_grain>>") %}
+            {% if grain is not none %}
+                {%- set dim_expression = split_parts | join(grain) -%}
+            {% endif %}
+            {% set expression = dim_expression %}
+        {% endif %}
         ({{expression}}) as property_to_aggregate__{{metric_dictionary.name}}
 {%- endmacro -%}
