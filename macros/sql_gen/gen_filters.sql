@@ -1,5 +1,5 @@
 {%- macro gen_filters(model_values, start_date, end_date, where, grain) -%}
-    {{ return(adapter.dispatch('gen_filters', 'metrics')(model_values, start_date, end_date, where)) }}
+    {{ return(adapter.dispatch('gen_filters', 'metrics')(model_values, start_date, end_date, where, grain)) }}
 {%- endmacro -%}
 
 {%- macro default__gen_filters(model_values, start_date, end_date, where, grain) -%}
