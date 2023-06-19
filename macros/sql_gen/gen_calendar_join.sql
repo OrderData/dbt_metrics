@@ -12,7 +12,7 @@
         {% endif -%}
 {% endmacro %}
 
-{% macro bigquery__gen_calendar_join(group_values) %}
+{% macro bigquery__gen_calendar_join(group_values, grain) %}
         left join calendar
         {%- if group_values.window is not none %}
             on cast(base_model.{{group_values.timestamp | replace( '<<date_grain>>' , grain ) }} as date) > date_sub(calendar.date_day, interval {{group_values.window.count}} {{group_values.window.period}})
@@ -22,7 +22,7 @@
         {% endif -%}
 {% endmacro %}
 
-{% macro postgres__gen_calendar_join(group_values) %}
+{% macro postgres__gen_calendar_join(group_values, grain) %}
         left join calendar
         {%- if group_values.window is not none %}
             on cast(base_model.{{group_values.timestamp | replace( '<<date_grain>>' , grain ) }} as date) > calendar.date_day - interval '{{group_values.window.count}} {{group_values.window.period}}'
@@ -32,7 +32,7 @@
         {% endif -%}
 {% endmacro %}
 
-{% macro redshift__gen_calendar_join(group_values) %}
+{% macro redshift__gen_calendar_join(group_values, grain) %}
         left join calendar
         {%- if group_values.window is not none %}
             on cast(base_model.{{group_values.timestamp | replace( '<<date_grain>>' , grain ) }} as date) > dateadd({{group_values.window.period}}, -{{group_values.window.count}}, calendar.date_day)
