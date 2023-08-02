@@ -131,10 +131,25 @@
             {%- if '<<partition_by_dimensions>>' in expression %}
                 {%- set split_parts = expression.split("<<partition_by_dimensions>>") -%}
                 {%- if dimensions == [] -%}
-                    {%- set dim_expression = split_parts | join(" ") -%}
+                    {%- set dim_expression = split_parts | join(" partition by true ") -%}
                 {%- elif dimensions != [] -%}
                     {%- set partition_by_expression = dimensions | join(', ') -%}
                     {%- set dim_expression = split_parts | join(" partition by " ~ partition_by_expression) -%}
+                {%- endif -%}
+                {%- set expression = dim_expression -%}
+            {%- endif %}
+            {%- if '<<partition_by_dimensions_and_date>>' in expression %}
+                {%- set split_parts = expression.split("<<partition_by_dimensions_and_date>>") -%}
+                {%- if dimensions == [] and grain is none -%}
+                    {%- set dim_expression = split_parts | join(" partition by true ") -%}
+                {%- elif dimensions == [] and grain is not none -%}
+                    {%- set dim_expression = split_parts | join(" partition by " + "date_"+ grain) -%}
+                {%- elif dimensions != [] and grain is none -%}
+                    {%- set partition_by_expression = dimensions | join(', ') -%}
+                    {%- set dim_expression = split_parts | join(" partition by " ~ partition_by_expression) -%}
+                {%- elif dimensions != [] and grain is not none -%}
+                    {%- set partition_by_expression = partition_by_expression + ", date_" + grain + " " -%}
+                    {%- set dim_expression = split_parts | join(" partition by " ~ partition_by_expression + ", date_" + grain) -%}
                 {%- endif -%}
                 {%- set expression = dim_expression -%}
             {%- endif %}
