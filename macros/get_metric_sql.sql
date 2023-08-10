@@ -50,7 +50,8 @@ LET THE COMPOSITION BEGIN!
 {#- First we add the calendar table - we only need to do this once no matter how many
 metrics there are -#}
 {{ metrics.gen_calendar_cte(
-    calendar_tbl=calendar_tbl,
+    calendar_tbl=calendar_tbl, 
+    grain=grain,
     start_date=start_date, 
     end_date=end_date) 
     }}
