@@ -3,7 +3,7 @@
 {%- endmacro -%}
 
 {% macro default__gen_calendar_join(group_values, grain) %}
-        left join calendar 
+        left join calendar{{' '}}
         {%- if group_values.window is not none %}
             {%- if grain in ['hour','minute'] %} on {{ date_trunc('minute', 'base_model.' + group_values.timestamp | replace( '<<date_grain>>' , grain )) + ' ' }} {%- else -%} on cast(base_model.{{group_values.timestamp | replace( '<<date_grain>>' , grain ) }} as date) {%- endif -%} > dateadd({{group_values.window.period}}, -{{group_values.window.count}}, calendar.date_{%- if grain in ['hour','minute'] %}minute{%- else -%}day{%- endif -%})
             {%- if grain in ['hour','minute'] %} and {{ date_trunc('minute', 'base_model.' + group_values.timestamp | replace( '<<date_grain>>' , grain )) + ' ' }} {%- else -%} and cast(base_model.{{group_values.timestamp | replace( '<<date_grain>>' , grain ) }} as date) {%- endif -%} < calendar.date_{%- if grain in ['hour','minute'] %}minute{%- else -%}day{%- endif -%}
