@@ -32,11 +32,7 @@ within the final dataset in order to accomplish base + secondary calc functional
 
 {#- Here we set the calendar table as a variable, which ensures the default overwritten if they include
 a custom calendar -#}
-{%- if grain == "hour" -%}
-    {%- set calendar_tbl = "dbt_metrics_detailed_calendar" -%}
-{%- else -%}
-    {%- set calendar_tbl = ref(var('dbt_metrics_calendar_model', "dbt_metrics_default_calendar")) -%}
-{%- endif -%}
+{%- set calendar_tbl = ref(var('dbt_metrics_calendar_model', "dbt_metrics_default_calendar")) -%}
 
 {#- Here we get the total dimension count for grouping -#}
 {%- set total_dimension_count = metrics.get_total_dimension_count(grain, dimensions, calendar_dimensions, relevant_periods) -%}
