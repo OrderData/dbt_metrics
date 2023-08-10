@@ -5,7 +5,7 @@
 
 {% macro default__develop(develop_yml, metric_list, grain=none, dimensions=[], secondary_calculations=[], start_date=none, end_date=none, where=none, date_alias=none) -%}
     {#- Need this here, since the actual ref is nested within loops/conditions: -#}
-    -- depends on: {{ ref(var('dbt_metrics_calendar_model', 'dbt_metrics_default_calendar')) }}
+    -- depends on: {{ ref(var('dbt_metrics_calendar_model', 'dbt_metrics_default_calendar', 'dbt_metrics_detailed_calendar')) }}
 
     {% if not execute -%}
         {%- do return("not execute") -%}
