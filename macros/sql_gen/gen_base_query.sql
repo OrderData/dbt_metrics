@@ -14,8 +14,10 @@
             -#}
             cast(base_model.{{group_values.timestamp | replace( '<<date_grain>>' , grain ) }} as {%- if grain in ['hour'] %} timestamp {%- else -%} date {%- endif -%}) as metric_date_{%- if grain in ['hour'] %}minute {%- else -%}day {%- endif -%},
             calendar.date_{{ grain }} as date_{{grain}},
-            {%- if grain in ['hour'] %}calendar.date_minute as window_filter_date,
-            {%- else -%}calendar.date_day as window_filter_date,
+            {%- if grain in ['hour'] %}
+            calendar.date_minute as window_filter_date,
+            {%- else -%}
+            calendar.date_day as window_filter_date,
             {%- endif -%}
                 {%- if secondary_calculations | length > 0 %}
                     {%- for period in relevant_periods %}

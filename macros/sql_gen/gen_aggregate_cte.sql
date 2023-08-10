@@ -37,7 +37,11 @@
         {% endfor -%}
 
         {%- if grain %}
+        {%- if grain in ['hour'] %}
+        {{ bool_or('metric_date_minute is not null') }} as has_data,
+        {%- else -%}
         {{ bool_or('metric_date_day is not null') }} as has_data,
+        {%- endif -%}
         {%- endif %}
 
         {#- This line performs the relevant aggregation by calling the 
