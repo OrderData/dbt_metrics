@@ -5,7 +5,7 @@
 
 {% macro default__calculate(metric_list, grain=none, dimensions=[], secondary_calculations=[], start_date=none, end_date=none, where=none, date_alias=none) %}
     {#- Need this here, since the actual ref is nested within loops/conditions: -#}
-    -- depends on: {{ ref(var('dbt_metrics_calendar_model', 'dbt_metrics_default_calendar')) }}
+    -- depends on: {{ ref(var('dbt_metrics_calendar_model', 'dbt_metrics_default_calendar')) }}, {{ ref('dbt_metrics_detailed_calendar') }}
     
     {#- ############
     VARIABLE SETTING - Creating the metric tree and making sure metric list is a list!
