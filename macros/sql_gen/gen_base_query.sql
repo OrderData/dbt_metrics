@@ -12,9 +12,9 @@
                 the same windows & filters, we can base the conditional off of the first 
                 value in the list because the order doesn't matter. 
             -#}
-            cast(base_model.{{group_values.timestamp | replace( '<<date_grain>>' , grain ) }} as {%- if grain in ['hour'] %} timestamp {%- else -%} date {%- endif -%}) as metric_date_{%- if grain in ['hour'] %}minute {%- else -%}day {%- endif -%},
+            cast(base_model.{{group_values.timestamp | replace( '<<date_grain>>' , grain ) }} as {%- if grain in ['hour','minute'] %} timestamp {%- else -%} date {%- endif -%}) as metric_date_{%- if grain in ['hour','minute'] %}minute{%- else -%}day{%- endif -%},
             calendar.date_{{ grain }} as date_{{grain}},
-            {%- if grain in ['hour'] %}
+            {%- if grain in ['hour','minute'] %}
             calendar.date_minute as window_filter_date,
             {%- else -%}
             calendar.date_day as window_filter_date,

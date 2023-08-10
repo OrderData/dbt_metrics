@@ -32,7 +32,7 @@ within the final dataset in order to accomplish base + secondary calc functional
 
 {#- Here we set the calendar table as a variable, which ensures the default overwritten if they include
 a custom calendar -#}
-{%- if grain in ['hour'] -%}
+{%- if grain in ['hour','minute'] -%}
     {%- set calendar_tbl = ref("dbt_metrics_detailed_calendar") -%}
 {%- else -%}
     {%- set calendar_tbl = ref(var('dbt_metrics_calendar_model', "dbt_metrics_default_calendar")) -%}
