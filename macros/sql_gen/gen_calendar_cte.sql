@@ -13,21 +13,21 @@ with calendar as (
     {% if start_date or end_date %}
         {%- if start_date and end_date -%}
             {%- if grain in ['hour','minute'] -%}
-            where date_minute >= '{{ start_date }}'
-            and date_minute < '{{ end_date }}'
+            where date_minute >= cast('{{ start_date }}' as timestamp)
+            and date_minute < cast('{{ end_date }}' as timestamp)
             {%- else -%}
             where date_day >= cast('{{ start_date }}' as date)
             and date_day < cast('{{ end_date }}' as date)
             {%- endif -%}
         {%- elif start_date and not end_date -%}
             {%- if grain in ['hour','minute'] -%}
-            where date_minute >= '{{ start_date }}'
+            where date_minute >= cast('{{ start_date }}' as timestamp)
             {%- else -%}
             where date_day >= cast('{{ start_date }}' as date)
             {%- endif -%}
         {%- elif end_date and not start_date -%}
             {%- if grain in ['hour','minute'] -%}
-            where date_minute < '{{ end_date }}'
+            where date_minute < cast('{{ end_date }}' as timestamp)
             {%- else -%}
             where date_day < cast('{{ end_date }}' as date)
             {%- endif -%}
