@@ -12,7 +12,7 @@ with days as (
 final as (
     select 
         date_minute,
-        {{ date_trunc('minute', 'date_minute') }} as date_hour
+        {{ date_trunc('hour', 'date_minute') }} as date_hour
     from days
 )
 
