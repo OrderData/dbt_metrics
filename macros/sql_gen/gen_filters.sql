@@ -14,11 +14,8 @@
     {% if start_date or end_date %}
         and (
         {% if start_date and end_date -%}
-            {%- if grain in ['hour','minute'] %}
             cast(base_model.{{model_values.timestamp | replace( '<<date_grain>>' , grain ) }} as {{calendar_date_type}}) >= cast('{{ start_date }}' as {{calendar_date_type}})
             and cast(base_model.{{model_values.timestamp | replace( '<<date_grain>>' , grain ) }} as {{calendar_date_type}}) < cast('{{ end_date }}' as {{calendar_date_type}})
-            {%- else -%}
-            {%- endif %}
         {%- elif start_date and not end_date -%}
             cast(base_model.{{model_values.timestamp | replace( '<<date_grain>>' , grain ) }} as {{calendar_date_type}}) >= cast('{{ start_date }}' as {{calendar_date_type}})
         {%- elif end_date and not start_date -%}
