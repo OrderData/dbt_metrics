@@ -115,5 +115,22 @@
             {% endif %}
             {% set expression = dim_expression %}
         {% endif %}
+        {%- if ('<<order_by_date_asc>>' in expression or '<<order_by_date_desc>>' in expression) %}
+            {% set order  = " asc " %}
+            {% set split_string = "<<order_by_date_asc>>" %}
+            {% if '<<order_by_date_desc>>' in expression %}
+                {% set order  = " desc " %}
+                {% set split_string = "<<order_by_date_desc>>" %}
+            {% endif %}
+            {%- set split_parts = expression.split(split_string) -%}
+            {%- if grain is none -%}
+                {%- set order_by_expression = " order by true " + order  -%}
+                {%- set time_expression = split_parts | join(order_by_expression) -%}
+            {%- elif grain is not none -%}
+                {%- set order_by_expression = " order by " + "date_"+ grain + " " + order -%}
+                {%- set time_expression = split_parts | join(order_by_expression) -%}
+            {%- endif -%}
+            {%- set expression = time_expression -%}
+        {%- endif -%}
         ({{expression}}) as property_to_aggregate__{{metric_dictionary.name}}
 {%- endmacro -%}
